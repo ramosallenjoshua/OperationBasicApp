@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">OperationBasicApp</string>
+    
+    <string-array name="Gender">
+        <item>- Select Item -</item>
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+    <string-array name="School_Affiliation">
+        <item>- Select Item -</item>
+        <item>Public</item>
+        <item>Private</item>
+    </string-array>
+</resources>
