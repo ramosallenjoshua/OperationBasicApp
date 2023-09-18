@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OperationBasicApp</string>
+    <string name="app_name">Operation Basic</string>
     
     <string-array name="Gender">
         <item>- Select Item -</item>

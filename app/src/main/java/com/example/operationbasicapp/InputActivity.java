@@ -74,6 +74,10 @@ public class InputActivity extends AppCompatActivity {
         genderAdpter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(genderAdpter);
 
+        ArrayAdapter<CharSequence> schoolAffAdapter = ArrayAdapter.createFromResource(this, R.array.School_Affiliation, android.R.layout.simple_spinner_item);
+        schoolAffAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        schoolaffiliationSpinner.setAdapter(schoolAffAdapter);
+
         processBtn.setOnClickListener(View->{
             processBtn.setText("Processing...");
 
