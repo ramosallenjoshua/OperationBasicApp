@@ -27,7 +27,7 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.066"
+        app:layout_constraintVertical_bias="0.064"
         app:srcCompat="@drawable/operation_basic_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
