@@ -1,7 +1,9 @@
 package com.example.operationbasicapp;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,11 +58,11 @@ public class InputActivity extends AppCompatActivity {
             inputData[i] = -1.0f;
         }
 
-        ArrayAdapter<CharSequence> genderAdpter = ArrayAdapter.createFromResource(this, R.array.Gender, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> genderAdpter = ArrayAdapter.createFromResource(this, R.array.Gender, R.layout.spinner_list);
         genderAdpter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         genderSpinner.setAdapter(genderAdpter);
 
-        ArrayAdapter<CharSequence> schoolAffAdapter = ArrayAdapter.createFromResource(this, R.array.School_Affiliation, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> schoolAffAdapter = ArrayAdapter.createFromResource(this, R.array.School_Affiliation, R.layout.spinner_list);
         schoolAffAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         schoolaffiliationSpinner.setAdapter(schoolAffAdapter);
 
@@ -126,46 +128,61 @@ public class InputActivity extends AppCompatActivity {
             }
 
             if(hasMissingItem == false){
-                processBtn.setText("Processing...");
+                File modelFile = new File(getDataDir() + "/kNN.onnx");
+                if(modelFile.exists()){
+                    processBtn.setText("Processing...");
 
-                try {
-                    session = env.createSession( getDataDir() + "/kNN.onnx", options);
-                    System.out.println(session.getInputInfo());
+                    try {
+                        session = env.createSession( modelFile.toString(), options);
+                        System.out.println(session.getInputInfo());
 
-                    FloatBuffer buffer = FloatBuffer.wrap(inputData);
-                    System.out.println(buffer);
+                        FloatBuffer buffer = FloatBuffer.wrap(inputData);
+                        System.out.println(buffer);
 
-                    OnnxTensor onnxTensor = OnnxTensor.createTensor(env,buffer, new long[]{1,4});
-                    System.out.println(onnxTensor);
+                        OnnxTensor onnxTensor = OnnxTensor.createTensor(env,buffer, new long[]{1,4});
+                        System.out.println(onnxTensor);
 
-                    Map<String, OnnxTensor> inputs = new HashMap<>();
-                    inputs.put("float_input",onnxTensor);
+                        Map<String, OnnxTensor> inputs = new HashMap<>();
+                        inputs.put("float_input",onnxTensor);
 
-                    System.out.println(inputs);
+                        System.out.println(inputs);
 
-                    result = session.run(inputs);
+                        result = session.run(inputs);
 
-                    long[] printResult = (long[]) result.get(0).getValue();
+                        long[] printResult = (long[]) result.get(0).getValue();
 
-                    output = Arrays.toString(printResult);
-                    System.out.println(output);
+                        output = Arrays.toString(printResult);
+                        System.out.println(output);
 
-                } catch (OrtException e) {
-                    e.printStackTrace();
-                }
-
-                Intent intent = new Intent(this, ResultActivity.class);
-
-                handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        {
-                            intent.putExtra("output", output);
-                            startActivity(intent);
-                        }
+                    } catch (OrtException e) {
+                        e.printStackTrace();
                     }
-                }, 2000);
+
+                    Intent intent = new Intent(this, ResultActivity.class);
+
+                    handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            {
+                                intent.putExtra("output", output);
+                                startActivity(intent);
+                            }
+                        }
+                    }, 2000);
+                }else{
+                    AlertDialog.Builder fileAlert = new AlertDialog.Builder(this);
+                    fileAlert.setMessage("Important files are missing from the device. Please make sure to allow permission to write files to device in order to use this feature.")
+                            .setTitle("Important Files Missing")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    finish();
+                                }
+                            });
+                    AlertDialog alert = fileAlert.create();
+                    alert.show();
+                }
 
             }else{
                 Toast.makeText(this, "Missing or Unselected items", Toast.LENGTH_SHORT).show();

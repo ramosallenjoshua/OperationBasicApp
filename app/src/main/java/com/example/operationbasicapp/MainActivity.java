@@ -41,26 +41,34 @@ public class MainActivity extends AppCompatActivity {
         fileDir = new File(getDataDir() + "/kNN.onnx");
         System.out.println(fileDir);
 
-        try {
-            inputStream = getAssets().open("kNN.onnx");
-            destination = "/storage/emulated/0/OperationBasicApp/model/file/kNN.onnx";
-            System.out.println(destination);
+        if(!fileDir.exists()){
+            try {
+                inputStream = getAssets().open("kNN.onnx");
+                destination = fileDir.toString();
+                System.out.println(destination);
 
-            outputStream = new FileOutputStream(fileDir);
+                outputStream = new FileOutputStream(fileDir);
 
-            byte[] buffer = new byte[1024];
-            int length;
+                byte[] buffer = new byte[1024];
+                int length;
 
-            while((length = inputStream.read(buffer)) > 0){
-                outputStream.write(buffer, 0, length);
+                while((length = inputStream.read(buffer)) > 0){
+                    outputStream.write(buffer, 0, length);
+                }
+
+                outputStream.flush();
+                outputStream.close();
+                inputStream.close();
+
+                if(fileDir.exists()){
+                    System.out.println("File Created");
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-            outputStream.flush();
-            outputStream.close();
-            inputStream.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        }else{
+            System.out.println("File Already Exists");
         }
 
         beginBtn = findViewById(R.id.beginBtn);
@@ -78,9 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
             // Requesting the permission
             ActivityCompat.requestPermissions(MainActivity.this, new String[] { permission }, requestCode);
-        }
-        else {
-            Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
         }
     }
 
