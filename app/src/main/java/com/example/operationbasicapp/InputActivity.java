@@ -129,7 +129,7 @@ public class InputActivity extends AppCompatActivity {
                 processBtn.setText("Processing...");
 
                 try {
-                    session = env.createSession("/storage/emulated/0/Android/data/com.example.operationbasicapp/files/kNN.onnx", options);
+                    session = env.createSession( getDataDir() + "/kNN.onnx", options);
                     System.out.println(session.getInputInfo());
 
                     FloatBuffer buffer = FloatBuffer.wrap(inputData);
