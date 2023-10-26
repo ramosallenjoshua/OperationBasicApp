@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Operation Basic</string>
-    
+
     <string-array name="Gender">
         <item>- Select Item -</item>
         <item>Male</item>
@@ -11,4 +11,6 @@
         <item>Public</item>
         <item>Private</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

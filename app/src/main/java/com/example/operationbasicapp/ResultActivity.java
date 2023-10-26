@@ -29,7 +29,7 @@ public class ResultActivity extends AppCompatActivity {
     }
 
     public String showDetailedResults(int outputCase, String[] detailedResults){
-        return "Out of 84 students, " + detailedResults[outputCase] + " had this performance";
+        return "Out of 83 students, " + detailedResults[outputCase] + " had this performance";
     }
     public int convertOutput(String output){
         switch(output){

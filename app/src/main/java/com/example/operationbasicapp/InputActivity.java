@@ -128,7 +128,7 @@ public class InputActivity extends AppCompatActivity {
             }
 
             if(hasMissingItem == false){
-                File modelFile = new File(getDataDir() + "/kNN.onnx");
+                File modelFile = new File(getDataDir() + "/model.onnx");
                 if(modelFile.exists()){
                     processBtn.setText("Processing...");
 
@@ -190,5 +190,26 @@ public class InputActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        genderSpinner = findViewById(R.id.genderSpinner);
+        schoolaffiliationSpinner = findViewById(R.id.schoolaffiliationSpinner);
+        ageEditText = findViewById(R.id.ageEditText);
+        ecdscoreEditText = findViewById(R.id.ecdEditText);
+        processBtn = findViewById(R.id.processBtn);
+        inputData = new float[4];
+
+        genderSpinner.setSelection(0);
+        schoolaffiliationSpinner.setSelection(0);
+        ageEditText.setText("");
+        ecdscoreEditText.setText("");
+        processBtn.setText("Process");
+
+        for(int i = 0; i < inputData.length; i++){
+            inputData[i] = -1.0f;
+        }
     }
 }
